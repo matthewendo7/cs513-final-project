@@ -29,13 +29,7 @@ for td in soup.find_all('td'):
             regions.append(e2)            
 
 
-with open('C:/Users/slim_/OneDrive/Documents/LA.csv', 'w', encoding='utf-8') as f:
+with open('C:/Users/slim_/OneDrive/Documents/regions.csv', 'w', encoding='utf-8') as f:
     writer = csv.writer(f)
     writer.writerows(zip(neighborhoods, regions))
     
-#with open('C:/Users/slim_/OneDrive/Documents/LA.csv', 'r') as in_file:
-#    with open('C:/Users/slim_/OneDrive/Documents/LA_no_empty_rows.csv', 'w') as out_file:
-#        writer_empty = csv.writer(out_file)
-#        for row in csv.reader(in_file):
-#            if any(row):
-#                writer_empty.writerow(row)
