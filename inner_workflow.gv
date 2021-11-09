@@ -1,0 +1,131 @@
+
+/* Start of top-level graph */
+digraph Workflow {
+rankdir=TB
+
+/* Title for graph */
+fontname=Helvetica; fontsize=18; labelloc=t
+label=LA_AirBnB
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; penwidth=0
+
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing atomic programs in workflow */
+create_database [shape=record rankdir=LR label="{<f0> create_database |<f1> create SQL database for LA AirBnB data}"];
+identify_listing_neighbourhoods_not_in_regions [shape=record rankdir=LR label="{<f0> identify_listing_neighbourhoods_not_in_regions |<f1> identify the listings that have neighbourhoods that have no corresponding entry in regions table}"];
+convert_dollars_to_int [shape=record rankdir=LR label="{<f0> convert_dollars_to_int |<f1> convert the dollar amounts in price to ints}"];
+remove_0_price_listings [shape=record rankdir=LR label="{<f0> remove_0_price_listings |<f1> remove listings with 0 as the price}"];
+remove_outlier_prices [shape=record rankdir=LR label="{<f0> remove_outlier_prices |<f1> remove lower and upper bound prices as they may skew the average}"];
+create_listings_new [shape=record rankdir=LR label="{<f0> create_listings_new |<f1> create listings_new where listings with null review scores are removed}"];
+remove_outliers_from_listings_new [shape=record rankdir=LR label="{<f0> remove_outliers_from_listings_new |<f1> remove outliers from listings_new}"];
+check_all_tables [shape=record rankdir=LR label="{<f0> check_all_tables |<f1> check listings, listings_new, and regions tables}"];
+SQL_query
+
+/* Style for nodes representing composite programs (sub-workflows) in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=2 fontname=Helvetica]
+
+/* Nodes representing composite programs (sub-workflows) in workflow */
+identify_null_neighbourhoods [shape=record rankdir=LR label="{<f0> identify_null_neighbourhoods |<f1> identify listings with null in neighbourhood column}"];
+check_missing_data [shape=record rankdir=LR label="{<f0> check_missing_data |<f1> check for missing data in columns of interest}"];
+check_listings_and_listings_new_and_regions_tables [shape=record rankdir=LR label="{<f0> check_listings_and_listings_new_and_regions_tables |<f1> check counts and distinct values for both tables and examine differences between listings and listings_new}"];
+
+/* Style for nodes representing non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes for non-parameter data channels in workflow */
+"listings.csv"
+"regions.csv"
+"LA_airbnb.db(listings_table)"
+"LA_airbnb.db(regions_table)"
+"LA_airbnb.db(listings_table)_1"
+"LA_airbnb.db(listings_table)_2"
+"LA_airbnb.db(listings_table)_3"
+"LA_airbnb.db(regions_table)_1"
+"LA_airbnb.db(listings_new_table)"
+"LA_airbnb.db(listings_new_table)_1"
+"LA_airbnb.db_cleaned"
+average_price_based_on_region_and_room_type
+average_rating_based_on_region_and_room_type
+average_price_based_on_region
+average_rating_based_on_region
+
+/* Style for nodes representing parameter channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing parameter channels in workflow */
+
+/* Edges representing connections between programs and channels */
+create_database -> "LA_airbnb.db(listings_table)"
+create_database -> "LA_airbnb.db(regions_table)"
+"listings.csv" -> create_database
+"regions.csv" -> create_database
+identify_null_neighbourhoods -> "LA_airbnb.db(listings_table)"
+"LA_airbnb.db(listings_table)" -> identify_null_neighbourhoods
+identify_listing_neighbourhoods_not_in_regions -> "LA_airbnb.db(regions_table)_1"
+"LA_airbnb.db(listings_table)" -> identify_listing_neighbourhoods_not_in_regions
+"LA_airbnb.db(regions_table)" -> identify_listing_neighbourhoods_not_in_regions
+change_flintridge_spelling_in_regions -> identify_listing_neighbourhoods_not_in_regions
+insert_east_whittier_in_regions -> identify_listing_neighbourhoods_not_in_regions
+convert_dollars_to_int -> "LA_airbnb.db(listings_table)_1"
+"LA_airbnb.db(listings_table)" -> convert_dollars_to_int
+remove_0_price_listings -> "LA_airbnb.db(listings_table)_2"
+"LA_airbnb.db(listings_table)_1" -> remove_0_price_listings
+remove_outlier_prices -> "LA_airbnb.db(listings_table)_3"
+"LA_airbnb.db(listings_table)_2" -> remove_outlier_prices
+check_missing_data -> "LA_airbnb.db(listings_table)_3"
+"LA_airbnb.db(listings_table)_3" -> check_missing_data
+create_listings_new -> "LA_airbnb.db(listings_new_table)"
+"LA_airbnb.db(listings_table)_3" -> create_listings_new
+check_listings_and_listings_new_and_regions_tables -> "LA_airbnb.db(listings_table)_3"
+check_listings_and_listings_new_and_regions_tables -> "LA_airbnb.db(regions_table)_1"
+check_listings_and_listings_new_and_regions_tables -> "LA_airbnb.db(listings_new_table)"
+"LA_airbnb.db(listings_table)_3" -> check_listings_and_listings_new_and_regions_tables
+"LA_airbnb.db(regions_table)_1" -> check_listings_and_listings_new_and_regions_tables
+"LA_airbnb.db(listings_new_table)" -> check_listings_and_listings_new_and_regions_tables
+remove_outliers_from_listings_new -> "LA_airbnb.db(listings_new_table)_1"
+"LA_airbnb.db(listings_new_table)" -> remove_outliers_from_listings_new
+check_all_tables -> "LA_airbnb.db_cleaned"
+"LA_airbnb.db(listings_new_table)_1" -> check_all_tables
+"LA_airbnb.db(listings_table)_3" -> check_all_tables
+"LA_airbnb.db(regions_table)_1" -> check_all_tables
+SQL_query -> average_price_based_on_region_and_room_type
+SQL_query -> average_rating_based_on_region_and_room_type
+SQL_query -> average_price_based_on_region
+SQL_query -> average_rating_based_on_region
+"LA_airbnb.db_cleaned" -> SQL_query
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* Style for nodes representing workflow input ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow input ports */
+"listings.csv_input_port" [label=""]
+"regions.csv_input_port" [label=""]
+
+/* Style for nodes representing workflow output ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow output ports */
+average_price_based_on_region_and_room_type_output_port [label=""]
+average_rating_based_on_region_and_room_type_output_port [label=""]
+average_price_based_on_region_output_port [label=""]
+average_rating_based_on_region_output_port [label=""]
+
+/* Edges from input ports to channels */
+"listings.csv_input_port" -> "listings.csv"
+"regions.csv_input_port" -> "regions.csv"
+
+/* Edges from channels to output ports */
+average_price_based_on_region_and_room_type -> average_price_based_on_region_and_room_type_output_port
+average_rating_based_on_region_and_room_type -> average_rating_based_on_region_and_room_type_output_port
+average_price_based_on_region -> average_price_based_on_region_output_port
+average_rating_based_on_region -> average_rating_based_on_region_output_port
+
+/* End of top-level graph */
+}
