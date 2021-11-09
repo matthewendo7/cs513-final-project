@@ -1,0 +1,82 @@
+# @begin LA_AirBnB
+# @in listings.csv
+# @in regions.csv
+
+#     @begin create_database  @desc create SQL database for LA AirBnB data
+#     @in listings.csv
+#     @in regions.csv
+#     @out LA_airbnb.db(listings_table)
+#     @out LA_airbnb.db(regions_table)
+#     @end create_database
+
+#     @begin identify_null_neighbourhoods  @desc identify listings with null in neighbourhood column
+#     @in LA_airbnb.db(listings_table)
+#     @out LA_airbnb.db(listings_table)
+#     @end identify_null_neighbourhoods
+
+#     @begin identify_listing_neighbourhoods_not_in_regions  @desc identify the listings that have neighbourhoods that have no corresponding entry in regions table
+#     @in LA_airbnb.db(listings_table)
+#     @in LA_airbnb.db(regions_table)
+#     @in change_flintridge_spelling_in_regions
+#     @in insert_east_whittier_in_regions
+#     @out LA_airbnb.db(regions_table)_1
+#     @end identify_listing_neighbourhoods_not_in_regions
+
+#     @begin convert_dollars_to_int  @desc convert the dollar amounts in price to ints
+#     @in LA_airbnb.db(listings_table)
+#     @out LA_airbnb.db(listings_table)_1
+#     @end convert_dollars_to_int
+
+#     @begin remove_0_price_listings  @desc remove listings with 0 as the price
+#     @in LA_airbnb.db(listings_table)_1
+#     @out LA_airbnb.db(listings_table)_2
+#     @end remove_0_price_listings
+
+#     @begin remove_outlier_prices  @desc remove lower and upper bound prices as they may skew the average
+#     @in LA_airbnb.db(listings_table)_2
+#     @out LA_airbnb.db(listings_table)_3
+#     @end remove_outlier_prices
+
+#     @begin check_missing_data  @desc check for missing data in columns of interest
+#     @in LA_airbnb.db(listings_table)_3
+#     @out LA_airbnb.db(listings_table)_3
+#     @end check_missing_data
+
+#     @begin create_listings_new  @desc create listings_new where listings with null review scores are removed
+#     @in LA_airbnb.db(listings_table)_3
+#     @out LA_airbnb.db(listings_new_table)
+#     @end create_listings_new  @desc create listings_new where listings with null review scores are removed
+
+#     @begin check_listings_and_listings_new_and_regions_tables  @desc check counts and distinct values for both tables and examine differences between listings and listings_new
+#     @in LA_airbnb.db(listings_table)_3
+#     @in LA_airbnb.db(regions_table)_1
+#     @in LA_airbnb.db(listings_new_table)
+#     @out LA_airbnb.db(listings_table)_3
+#     @out LA_airbnb.db(regions_table)_1
+#     @out LA_airbnb.db(listings_new_table)
+#     @end check_listings_and_listings_new_and_regions_tables
+
+#     @begin remove_outliers_from_listings_new  @desc remove outliers from listings_new
+#     @in LA_airbnb.db(listings_new_table)
+#     @out LA_airbnb.db(listings_new_table)_1
+#     @end remove_outliers_from_listings_new
+
+#     @begin check_all_tables  @desc check listings, listings_new, and regions tables
+#     @in LA_airbnb.db(listings_new_table)_1
+#     @in LA_airbnb.db(listings_table)_3
+#     @in LA_airbnb.db(regions_table)_1
+#     @out LA_airbnb.db_cleaned
+#     @end check_all_tables
+
+#     @begin SQL_query
+#     @in LA_airbnb.db_cleaned
+#     @out average_price_based_on_region_and_room_type
+#     @out average_rating_based_on_region_and_room_type
+#     @out average_price_based_on_region
+#     @out average_rating_based_on_region
+#     @end SQL_query
+# @out average_price_based_on_region_and_room_type
+# @out average_rating_based_on_region_and_room_type
+# @out average_price_based_on_region
+# @out average_rating_based_on_region
+# @end LA_AirBnB
