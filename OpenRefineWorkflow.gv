@@ -1,0 +1,101 @@
+
+/* Start of top-level graph */
+digraph Workflow {
+rankdir=TB
+
+/* Title for graph */
+fontname=Helvetica; fontsize=18; labelloc=t
+label=Linear_OR
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; penwidth=0
+
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing atomic programs in workflow */
+"core/column-addition0#" [shape=record rankdir=LR label="{<f0> core/column-addition0# |<f1> Create column price_num at index 40 based on column price using expression grel\:value}"];
+"core/text-transform0#" [shape=record rankdir=LR label="{<f0> core/text-transform0# |<f1> Text transform on cells in column price_num using expression value.replace(\"$\",\"\")}"];
+"core/text-transform1#" [shape=record rankdir=LR label="{<f0> core/text-transform1# |<f1> Text transform on cells in column price_num using expression value.replace(\",\",\"\")}"];
+"core/text-transform2#" [shape=record rankdir=LR label="{<f0> core/text-transform2# |<f1> Text transform on cells in column price_num using expression value.toNumber()}"];
+"core/row-removal0#" [shape=record rankdir=LR label="{<f0> core/row-removal0# |<f1> Remove rows}"];
+"core/row-removal1#" [shape=record rankdir=LR label="{<f0> core/row-removal1# |<f1> Remove rows}"];
+"core/text-transform3#" [shape=record rankdir=LR label="{<f0> core/text-transform3# |<f1> Text transform on cells in column description using expression value.replace(\"<br />\",\"\\n\")}"];
+"core/text-transform4#" [shape=record rankdir=LR label="{<f0> core/text-transform4# |<f1> Text transform on cells in column description using expression value.replace(\"<b>\",\"\")}"];
+"core/text-transform5#" [shape=record rankdir=LR label="{<f0> core/text-transform5# |<f1> Text transform on cells in column description using expression value.replace(\"</b>\",\"\")}"];
+
+/* Style for nodes representing non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes for non-parameter data channels in workflow */
+table9
+table0
+table1
+table2
+table3
+table4
+table5
+table6
+table7
+table8
+
+/* Style for nodes representing parameter channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing parameter channels in workflow */
+"col-name:price"
+"col-name:price_num"
+"expression:value.replace(\"$\",\"\")"
+"expression:value.replace(\",\",\"\")"
+"expression:value.toNumber()"
+"col-name:review_scores_value"
+"expression:\"value\""
+"col-name:description"
+"expression:value.replace(\"<br_/>\",\"\\n\")"
+"expression:value.replace(\"<b>\",\"\")"
+"expression:value.replace(\"</b>\",\"\")"
+
+/* Edges representing connections between programs and channels */
+"core/column-addition0#" -> table1
+"col-name:price" -> "core/column-addition0#"
+"newColumnName:\"price_num\"" -> "core/column-addition0#"
+table0 -> "core/column-addition0#"
+"core/text-transform0#" -> table2
+"col-name:price_num" -> "core/text-transform0#"
+"expression:value.replace(\"$\",\"\")" -> "core/text-transform0#"
+table1 -> "core/text-transform0#"
+"core/text-transform1#" -> table3
+"col-name:price_num" -> "core/text-transform1#"
+"expression:value.replace(\",\",\"\")" -> "core/text-transform1#"
+table2 -> "core/text-transform1#"
+"core/text-transform2#" -> table4
+"col-name:price_num" -> "core/text-transform2#"
+"expression:value.toNumber()" -> "core/text-transform2#"
+table3 -> "core/text-transform2#"
+"core/row-removal0#" -> table5
+"col-name:review_scores_value" -> "core/row-removal0#"
+"expression:\"value\"" -> "core/row-removal0#"
+table4 -> "core/row-removal0#"
+"core/row-removal1#" -> table6
+"col-name:price" -> "core/row-removal1#"
+"expression:\"value\"" -> "core/row-removal1#"
+table5 -> "core/row-removal1#"
+"core/text-transform3#" -> table7
+"col-name:description" -> "core/text-transform3#"
+"expression:value.replace(\"<br_/>\",\"\\n\")" -> "core/text-transform3#"
+table6 -> "core/text-transform3#"
+"core/text-transform4#" -> table8
+"col-name:description" -> "core/text-transform4#"
+"expression:value.replace(\"<b>\",\"\")" -> "core/text-transform4#"
+table7 -> "core/text-transform4#"
+"core/text-transform5#" -> table9
+"col-name:description" -> "core/text-transform5#"
+"expression:value.replace(\"</b>\",\"\")" -> "core/text-transform5#"
+table8 -> "core/text-transform5#"
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* End of top-level graph */
+}
