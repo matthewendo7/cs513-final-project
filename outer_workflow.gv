@@ -1,0 +1,82 @@
+
+/* Start of top-level graph */
+digraph Workflow {
+rankdir=TB
+
+/* Title for graph */
+fontname=Helvetica; fontsize=18; labelloc=t
+label=LA_AirBnB
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; penwidth=0
+
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing atomic programs in workflow */
+create_database [shape=record rankdir=LR label="{<f0> create_database |<f1> create SQL database for LA AirBnB data}"];
+SQL_cleaning [shape=record rankdir=LR label="{<f0> SQL_cleaning |<f1> examine listings table not found in regions table, convert price to num, remove outliers and NULL values,}"];
+SQL_query [shape=record rankdir=LR label="{<f0> SQL_query |<f1> query db for average price/ratings based on region (and region and room type)}"];
+
+/* Style for nodes representing non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes for non-parameter data channels in workflow */
+"listings.csv"
+"regions.csv"
+"LA_airbnb.db"
+"LA_airbnb.db_cleaned"
+average_price_based_on_region_and_room_type
+average_rating_based_on_region_and_room_type
+average_price_based_on_region
+average_rating_based_on_region
+
+/* Style for nodes representing parameter channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing parameter channels in workflow */
+
+/* Edges representing connections between programs and channels */
+create_database -> "LA_airbnb.db"
+"listings.csv" -> create_database
+"regions.csv" -> create_database
+SQL_cleaning -> "LA_airbnb.db_cleaned"
+"LA_airbnb.db" -> SQL_cleaning
+SQL_query -> average_price_based_on_region_and_room_type
+SQL_query -> average_rating_based_on_region_and_room_type
+SQL_query -> average_price_based_on_region
+SQL_query -> average_rating_based_on_region
+"LA_airbnb.db_cleaned" -> SQL_query
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* Style for nodes representing workflow input ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow input ports */
+"listings.csv_input_port" [label=""]
+"regions.csv_input_port" [label=""]
+
+/* Style for nodes representing workflow output ports */
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+
+/* Nodes representing workflow output ports */
+average_price_based_on_region_and_room_type_output_port [label=""]
+average_rating_based_on_region_and_room_type_output_port [label=""]
+average_price_based_on_region_output_port [label=""]
+average_rating_based_on_region_output_port [label=""]
+
+/* Edges from input ports to channels */
+"listings.csv_input_port" -> "listings.csv"
+"regions.csv_input_port" -> "regions.csv"
+
+/* Edges from channels to output ports */
+average_price_based_on_region_and_room_type -> average_price_based_on_region_and_room_type_output_port
+average_rating_based_on_region_and_room_type -> average_rating_based_on_region_and_room_type_output_port
+average_price_based_on_region -> average_price_based_on_region_output_port
+average_rating_based_on_region -> average_rating_based_on_region_output_port
+
+/* End of top-level graph */
+}
