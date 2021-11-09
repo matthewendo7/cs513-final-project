@@ -1,0 +1,24 @@
+@begin LA_AirBnB
+@in listings.csv
+@in regions.csv
+@begin create_database @desc create SQL database for LA AirBnB data
+@in listings.csv
+@in regions.csv
+@out LA_airbnb.db
+@end create_database
+@begin SQL_cleaning @desc examine listings table not found in regions table, convert price to num, remove outliers and NULL values,
+@in LA_airbnb.db
+@out LA_airbnb.db_cleaned
+@end SQL_cleaning
+@begin SQL_query @desc query db for average price/ratings based on region (and region and room type)
+@in LA_airbnb.db_cleaned
+@out average_price_based_on_region_and_room_type
+@out average_rating_based_on_region_and_room_type
+@out average_price_based_on_region
+@out average_rating_based_on_region
+@end SQL_query
+@out average_price_based_on_region_and_room_type
+@out average_rating_based_on_region_and_room_type
+@out average_price_based_on_region
+@out average_rating_based_on_region
+@end LA_AirBnB
